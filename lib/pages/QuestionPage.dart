@@ -12,7 +12,7 @@ import 'BuildQuestion.dart';
 
 class QuestionPage extends StatelessWidget{
 final QuizModel selectedQuiz;
-final String quizId = generateRandomString(5);
+final int quizId = new DateTime.now().millisecondsSinceEpoch;
 
 QuestionPage(this.selectedQuiz);
 

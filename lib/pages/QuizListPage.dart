@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get/get.dart';
 import 'package:quizapp/blocs/quiz/quiz-event.dart';
 import 'package:quizapp/models/quiz-model.dart';
 

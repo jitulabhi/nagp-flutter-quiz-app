@@ -42,4 +42,19 @@ class Repository {
   saveQuestionAnswer(AnswerModel model){
     FirebaseFirestore.instance.collection("answers").add(model.toJson());
   }
+
+  Stream<List<AnswerModel>> getAnswerList(String profileId) {
+    return FirebaseFirestore.instance
+        .collection('answers')
+        .where('profileId', isEqualTo: profileId)
+        .snapshots()
+        .map((snapshot) {
+      return snapshot.docs
+          .map((doc) => AnswerModel(doc['profileId'], doc['quizId'], 
+          QuizModel(doc['quiz']['label'], doc['quiz']['id']), 
+          doc['questionLabel'], 
+          QuestionOptionModel(doc['optionSelected']['label'], doc['optionSelected']['marks'])))
+          .toList();
+    });
+  }
 }

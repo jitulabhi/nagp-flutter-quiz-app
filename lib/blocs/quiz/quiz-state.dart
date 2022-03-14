@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'package:quizapp/models/quiz-model.dart';
 
  abstract class QuizState{ 

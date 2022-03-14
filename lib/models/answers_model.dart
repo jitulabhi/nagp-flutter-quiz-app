@@ -3,18 +3,18 @@ import 'package:quizapp/models/quiz-model.dart';
 
 class AnswerModel {
   late String _profileId;
-  late String _quizId;
+  late int _quizId;
   late QuizModel _quiz;
   late String _questionLabel;
   late QuestionOptionModel _optionSelected;
 
   String get profileId => _profileId;
-  String get quizId => _quizId;
+  int get quizId => _quizId;
   QuizModel get quizModel => _quiz;
   String get questionLabel => _questionLabel;
   QuestionOptionModel get optionSelected => _optionSelected;
 
-  AnswerModel(String profileId, String quizId, QuizModel quizModel, String questionLabel, QuestionOptionModel optionSelected){
+  AnswerModel(String profileId, int quizId, QuizModel quizModel, String questionLabel, QuestionOptionModel optionSelected){
     _profileId = profileId;
     _quizId = quizId;
     _quiz = quizModel;

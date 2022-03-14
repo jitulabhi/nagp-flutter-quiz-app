@@ -19,7 +19,7 @@ class UpdateQuestion extends QuestionEvent {
 }
 
 class SelectQuestionOption extends QuestionEvent {
-  String quizId;
+  int quizId;
    QuestionOptionModel selectedOption;
    SelectQuestionOption(this.quizId, this.selectedOption);
 

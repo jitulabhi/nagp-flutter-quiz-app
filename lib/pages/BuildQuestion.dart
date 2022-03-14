@@ -9,7 +9,7 @@ import '../blocs/question/question-bloc.dart';
 // ignore: must_be_immutable
 class BuildQuestion extends StatelessWidget {
   late QuestionState _state;
-  late String _quizId;
+  late int _quizId;
 
   BuildQuestion(quizId){
     _quizId = quizId;
