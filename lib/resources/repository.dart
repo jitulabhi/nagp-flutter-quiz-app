@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:quizapp/models/answers_model.dart';
+import 'package:quizapp/models/profile_model.dart';
 import 'package:quizapp/models/question_option_model.dart';
 import 'package:quizapp/models/quiz-model.dart';
 
@@ -39,7 +40,7 @@ class Repository {
     });
   }
 
-  saveQuestionAnswer(AnswerModel model){
+  saveQuestionAnswer(AnswerModel model) {
     FirebaseFirestore.instance.collection("answers").add(model.toJson());
   }
 
@@ -47,14 +48,43 @@ class Repository {
     return FirebaseFirestore.instance
         .collection('answers')
         .where('profileId', isEqualTo: profileId)
+        .orderBy("quiz.id", descending: false)
+        .orderBy("quizId", descending: true)
         .snapshots()
         .map((snapshot) {
       return snapshot.docs
-          .map((doc) => AnswerModel(doc['profileId'], doc['quizId'], 
-          QuizModel(doc['quiz']['label'], doc['quiz']['id']), 
-          doc['questionLabel'], 
-          QuestionOptionModel(doc['optionSelected']['label'], doc['optionSelected']['marks'])))
+          .map((doc) => AnswerModel(
+              doc['profileId'],
+              doc['quizId'],
+              QuizModel(doc['quiz']['label'], doc['quiz']['id']),
+              doc['questionLabel'],
+              QuestionOptionModel(doc['optionSelected']['label'],
+                  doc['optionSelected']['marks'])))
           .toList();
     });
+  }
+
+  Stream<List<ProfileModel>> getProfile(String profileId) {
+    return FirebaseFirestore.instance
+        .collection("profiles")
+        .where("profileId", isEqualTo: profileId)
+        .orderBy("createdAt", descending: true)
+        .snapshots()
+        .map((snapShot) {
+      return snapShot.docs
+          .map((doc) => ProfileModel(
+              doc['createdAt'],
+              doc['profileId'],
+              doc['name'],
+              doc['designation'],
+              doc['phone'],
+              doc['location'],
+              doc['description']))
+          .toList();
+    });
+  }
+
+  saveOrUpdateProfile(ProfileModel model) {
+    FirebaseFirestore.instance.collection("profiles").add(model.toJson());
   }
 }

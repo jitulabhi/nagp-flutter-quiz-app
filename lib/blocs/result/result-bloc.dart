@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quizapp/models/answers_model.dart';
+import 'package:quizapp/models/result_bar_chart_model.dart';
 
 import '../../resources/repository.dart';
 import 'result-event.dart';
@@ -31,10 +32,8 @@ class ResultBloc extends Bloc<ResultEvent, ResultState> {
   }
 
   Stream<ResultState> _mapUpdateResultToState(UpdateResult event) async* {
-    yield ResultLoaded(list: event.list);
-    print(event.list);
+      Map<String, Map<int, ResultBarChartModel>> mapByQuizAndQuizId = {};
     if (event.list.isNotEmpty) {
-      Map<String, Map<int, int>> mapByQuizAndQuizId = {};
       Map<String, List<AnswerModel>> groupByQuizName =
           event.list.groupListsBy((element) => element.quizModel.label);
       groupByQuizName.keys.forEach((quizName) {
@@ -42,17 +41,21 @@ class ResultBloc extends Bloc<ResultEvent, ResultState> {
             groupByQuizName[quizName]!.toList(growable: false);
         Map<int, List<AnswerModel>> groupByQuizId =
             byQuizName.groupListsBy((element) => element.quizId);
-        Map<int, int> finalMapByQuizId = {};
+        Map<int, ResultBarChartModel> finalMapByQuizId = {};
         groupByQuizId.keys.forEach((quizId) {
-          int marks = groupByQuizId[quizId]!
+          int correct =  groupByQuizId[quizId]!
               .toList(growable: false)
               .map((e) => e.optionSelected.marks)
               .sum;
-          finalMapByQuizId.putIfAbsent(quizId, () => marks);
+            int incorrect = groupByQuizId[quizId]!
+            .toList(growable: false)
+            .where((e) => e.optionSelected.marks == 0).length;
+          finalMapByQuizId.putIfAbsent(quizId, () => ResultBarChartModel(correct, incorrect));
         });
         mapByQuizAndQuizId.putIfAbsent(quizName, () => finalMapByQuizId);
       });
       print(mapByQuizAndQuizId);
+    yield ResultLoaded(list: event.list, mapByQuizAndQuizId: mapByQuizAndQuizId);
     }
   }
 }
