@@ -17,7 +17,7 @@ class QuestionBloc extends Bloc<QuestionEvent, QuestionState> {
       : super(QuestionLoading(
             list: List<QuestionModel>.from([]),
             currentIndex: 0,
-            selectedQuiz: QuizModel("", "")));
+            selectedQuiz: QuizModel("", "", "")));
 
   @override
   Stream<QuestionState> mapEventToState(QuestionEvent event) async* {

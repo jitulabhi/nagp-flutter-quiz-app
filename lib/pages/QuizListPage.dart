@@ -25,7 +25,8 @@ class QuizListPage extends StatelessWidget {
                     return ListTile(title: Text(state.list[index].label), 
                     onTap: (){
                        context.read<QuizBloc>().add(SelectQuiz(state.list[index]));
-                    }
+                    }, leading: Icon(Icons.quiz),
+                    subtitle: Text(state.list[index].description),
                     );
                   });
             } if(state is QuizSelected){

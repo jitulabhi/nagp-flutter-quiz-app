@@ -15,7 +15,7 @@ class Repository {
         .snapshots()
         .map((snapshot) {
       return snapshot.docs
-          .map((doc) => QuizModel(doc['label'], doc['id']))
+          .map((doc) => QuizModel(doc['label'], doc['id'], doc['description']))
           .toList();
     });
   }
@@ -56,7 +56,7 @@ class Repository {
           .map((doc) => AnswerModel(
               doc['profileId'],
               doc['quizId'],
-              QuizModel(doc['quiz']['label'], doc['quiz']['id']),
+              QuizModel(doc['quiz']['label'], doc['quiz']['id'], doc['quiz']['description']),
               doc['questionLabel'],
               QuestionOptionModel(doc['optionSelected']['label'],
                   doc['optionSelected']['marks'])))

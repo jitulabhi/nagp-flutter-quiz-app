@@ -70,10 +70,6 @@ class _profilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     final color = Theme.of(context).colorScheme.primary;
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Profile'),
-        ),
-        drawer: NavDrawer(),
         body: Container(
             margin: EdgeInsets.symmetric(horizontal: 10),
            // height: 450,
