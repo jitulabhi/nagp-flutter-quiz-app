@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quizapp/blocs/question/question-event.dart';
@@ -10,16 +12,19 @@ import '../blocs/question/question-bloc.dart';
 class BuildQuestion extends StatelessWidget {
   late QuestionState _state;
   late int _quizId;
-
+  
   BuildQuestion(quizId){
     _quizId = quizId;
+    
   }
 
   @override
   Widget build(BuildContext context) {
     _state = context.read<QuestionBloc>().state;
+   
     return Material(
       child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
