@@ -97,7 +97,7 @@ class BuildQuestion extends StatelessWidget {
           width: 150,
           child: ElevatedButton(
             onPressed: () => BlocProvider.of<QuestionBloc>(context)
-                .add(FinishQuestion()),
+                .add(FinishQuestion(_quizId)),
             child: Text(label),
           ),
         ));
@@ -110,7 +110,7 @@ class BuildQuestion extends StatelessWidget {
           width: 150,
           child: ElevatedButton(
             onPressed: () => BlocProvider.of<QuestionBloc>(context)
-                .add(SkipQuestion()),
+                .add(SkipQuestion(_quizId)),
             child: Text(label),
           ),
         ));

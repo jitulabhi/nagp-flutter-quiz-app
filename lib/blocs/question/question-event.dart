@@ -26,9 +26,11 @@ class SelectQuestionOption extends QuestionEvent {
 }
 
 class FinishQuestion extends QuestionEvent {
-  FinishQuestion();
+  int quizId;
+  FinishQuestion(this.quizId);
 }
 
 class SkipQuestion extends QuestionEvent {
-  SkipQuestion();
+  int quizId;
+  SkipQuestion(this.quizId);
 }

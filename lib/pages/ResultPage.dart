@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:quizapp/models/result_bar_chart_by_quiz_name_model.dart';
 
 import '../blocs/result/result-bloc.dart';
 import '../blocs/result/result-event.dart';
@@ -21,17 +20,12 @@ class ResultPage extends StatelessWidget {
           return Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-                Container(
-                  height: 300,
-                  //margin: const EdgeInsets.only(bottom: 50),
-                  child: charts.BarChart(_seriesList(state),
-                      animate: false,
-                      barGroupingType: charts.BarGroupingType.grouped),
-                  constraints:
-                      const BoxConstraints(maxHeight: 300, maxWidth: 300),
-                )
-              ]),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: _barChart(state)),
+              const SizedBox(
+                height: 50,
+              ),
               Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: _gaugeChart(state))
@@ -40,50 +34,64 @@ class ResultPage extends StatelessWidget {
         })));
   }
 
-  List<charts.Series<ResultBarChartByQuizNameModel, String>> _seriesList(
-      ResultState state) {
+  List<Widget> _barChart(ResultState state) {
+    return [
+      Container(
+        height: 300,
+        //margin: const EdgeInsets.only(bottom: 50),
+        child: charts.BarChart(_barChartSeriesList(state),
+            animate: false, barGroupingType: charts.BarGroupingType.grouped),
+        constraints: const BoxConstraints(maxHeight: 300, maxWidth: 300),
+      )
+    ];
+  }
+
+  List<charts.Series<BarChartModel, String>>
+      _barChartSeriesList(ResultState state) {
     var quizNames = state.mapByQuizAndQuizId.keys.toList();
 
-    final List<ResultBarChartByQuizNameModel> attemptedData = [];
-    final List<ResultBarChartByQuizNameModel> correctData = [];
-    final List<ResultBarChartByQuizNameModel> incorrectData = [];
+    final List<BarChartModel> attemptedData = [];
+    final List<BarChartModel> correctData = [];
+    final List<BarChartModel> incorrectData = [];
 
     quizNames.forEach((key) {
-      attemptedData.add(ResultBarChartByQuizNameModel(
+      attemptedData.add(BarChartModel(
           key, state.mapByQuizAndQuizId[key]!.entries.first.value.attempted));
-      correctData.add(ResultBarChartByQuizNameModel(
+      correctData.add(BarChartModel(
           key, state.mapByQuizAndQuizId[key]!.entries.first.value.correct));
-      incorrectData.add(ResultBarChartByQuizNameModel(
+      incorrectData.add(BarChartModel(
           key, state.mapByQuizAndQuizId[key]!.entries.first.value.incorrect));
     });
 
     return [
-      charts.Series<ResultBarChartByQuizNameModel, String>(
+      charts.Series<BarChartModel, String>(
         id: 'Attempted',
-        domainFn: (ResultBarChartByQuizNameModel model, _) => model.quizName,
-        measureFn: (ResultBarChartByQuizNameModel model, _) => model.count,
+        domainFn: (BarChartModel model, _) => model.quizName,
+        measureFn: (BarChartModel model, _) => model.count,
         data: attemptedData,
-        colorFn: (ResultBarChartByQuizNameModel model, _) =>
+        colorFn: (BarChartModel model, _) =>
             charts.ColorUtil.fromDartColor(Colors.green),
       ),
-      charts.Series<ResultBarChartByQuizNameModel, String>(
+      charts.Series<BarChartModel, String>(
         id: 'Correct',
-        domainFn: (ResultBarChartByQuizNameModel model, _) => model.quizName,
-        measureFn: (ResultBarChartByQuizNameModel model, _) => model.count,
+        domainFn: (BarChartModel model, _) => model.quizName,
+        measureFn: (BarChartModel model, _) => model.count,
         data: correctData,
-        colorFn: (ResultBarChartByQuizNameModel model, _) =>
+        colorFn: (BarChartModel model, _) =>
             charts.ColorUtil.fromDartColor(Colors.blue),
       ),
-      charts.Series<ResultBarChartByQuizNameModel, String>(
+      charts.Series<BarChartModel, String>(
         id: 'Incorrect',
-        domainFn: (ResultBarChartByQuizNameModel model, _) => model.quizName,
-        measureFn: (ResultBarChartByQuizNameModel model, _) => model.count,
+        domainFn: (BarChartModel model, _) => model.quizName,
+        measureFn: (BarChartModel model, _) => model.count,
         data: incorrectData,
-        colorFn: (ResultBarChartByQuizNameModel model, _) =>
+        colorFn: (BarChartModel model, _) =>
             charts.ColorUtil.fromDartColor(Colors.red),
       ),
     ];
   }
+
+  
 
   List<Widget> _gaugeChart(ResultState state) {
     var quizNames = state.mapByQuizAndQuizId.keys.toList();
@@ -107,26 +115,19 @@ class ResultPage extends StatelessWidget {
           data: data,
         )
       ];
-      chartList.add( Row(
-            children: [
-              Text(key + '(' + score.toStringAsFixed(0) + '%)'),
-           SizedBox(
-          height: 100,
-          width: 100,
-          child: charts.PieChart<String>(seriesList,
-              animate: false,
-              defaultRenderer: charts.ArcRendererConfig(
-                  arcWidth: 10,
-                  startAngle: 4 / 5 * pi,
-                  arcLength: 7 / 5 * pi)
-                  )
-           )
-                   ]
-
-          )
-          );
-    }
-    );
+      chartList.add(Column(children: [
+        Text(key + '(' + score.toStringAsFixed(0) + '%)'),
+        SizedBox(
+            height: 100,
+            width: 100,
+            child: charts.PieChart<String>(seriesList,
+                animate: false,
+                defaultRenderer: charts.ArcRendererConfig(
+                    arcWidth: 10,
+                    startAngle: 4 / 5 * pi,
+                    arcLength: 7 / 5 * pi)))
+      ]));
+    });
     return chartList;
   }
 }
@@ -136,4 +137,18 @@ class GaugePercentage {
   final double score;
 
   GaugePercentage(this.quizName, this.score);
+}
+
+
+class BarChartModel {
+  late String _quizName;
+  late int _count;
+
+  String get quizName => _quizName;
+  int get count => _count;
+
+  BarChartModel(String quizName, int count) {
+    this._quizName = quizName;
+    this._count = count;
+  }
 }

@@ -32,7 +32,7 @@ class QuizListPage extends StatelessWidget {
             } if(state is QuizSelected){
               return QuestionPage(state.selected);
             }else {
-              return Text('Something wnet wrong');
+              return Text('Something went wrong');
             }
           })
         

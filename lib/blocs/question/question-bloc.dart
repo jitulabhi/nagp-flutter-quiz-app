@@ -7,6 +7,7 @@ import 'package:quizapp/models/answers_model.dart';
 import 'package:quizapp/models/question_model.dart';
 import 'package:quizapp/models/quiz-model.dart';
 
+import '../../models/question_option_model.dart';
 import '../../resources/repository.dart';
 import 'question-event.dart';
 
@@ -82,6 +83,18 @@ class QuestionBloc extends Bloc<QuestionEvent, QuestionState> {
   }
 
   Stream<QuestionState> _mapFinishQuestionToState(FinishQuestion event) async* {
+    if (state.currentIndex <= state.list.length - 1) {
+      for (var i = state.currentIndex; i <= state.list.length - 1; i++) {
+        AnswerModel model = AnswerModel(
+            "profile-1",
+            event.quizId,
+            state.selectedQuiz,
+            state.list[i].label,
+            QuestionOptionModel("", 0));
+        repository.saveQuestionAnswer(model);
+      }
+    }
+
     yield QuestionFinish(
         list: state.list,
         currentIndex: state.currentIndex,
@@ -89,6 +102,13 @@ class QuestionBloc extends Bloc<QuestionEvent, QuestionState> {
   }
 
   Stream<QuestionState> _mapSkipQuestionToState(SkipQuestion event) async* {
+    AnswerModel model = AnswerModel(
+        "profile-1",
+        event.quizId,
+        state.selectedQuiz,
+        state.list[state.currentIndex].label,
+        QuestionOptionModel("", 0));
+    repository.saveQuestionAnswer(model);
     //if this is last
     if (state.currentIndex == state.list.length - 1) {
       yield QuestionFinish(

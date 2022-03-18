@@ -5,12 +5,17 @@ import 'package:quizapp/pages/NavDrawer.dart';
 import 'package:quizapp/pages/ProfilePage.dart';
 import 'package:quizapp/pages/QuizListPage.dart';
 import 'package:quizapp/pages/ResultPage.dart';
+import 'package:quizapp/resources/load-repository.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+   HomePage({Key? key}) : super(key: key);
+
+  final loadRepository = LoadRepository();
 
   @override
   Widget build(BuildContext context) {
+   // loadRepository.loadData();
+    
     return MaterialApp(
       home: DefaultTabController(
         length: 3,

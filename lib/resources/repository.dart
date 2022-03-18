@@ -56,7 +56,7 @@ class Repository {
           .map((doc) => AnswerModel(
               doc['profileId'],
               doc['quizId'],
-              QuizModel(doc['quiz']['label'], doc['quiz']['id'], doc['quiz']['description']),
+              QuizModel(doc['quiz']['label'], doc['quiz']['id'], doc['quiz']['description'] ?? ''),
               doc['questionLabel'],
               QuestionOptionModel(doc['optionSelected']['label'],
                   doc['optionSelected']['marks'])))
