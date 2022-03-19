@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:quizapp/models/profile_model.dart';
-import 'package:quizapp/pages/NavDrawer.dart';
 import 'package:quizapp/resources/repository.dart';
 
 import 'ImageFromGallaryEx.dart';

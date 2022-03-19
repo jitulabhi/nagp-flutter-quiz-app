@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
-import 'package:quizapp/pages/NavDrawer.dart';
 import 'package:quizapp/pages/ProfilePage.dart';
 import 'package:quizapp/pages/QuizListPage.dart';
 import 'package:quizapp/pages/ResultPage.dart';
@@ -20,7 +19,6 @@ class HomePage extends StatelessWidget {
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
-          drawer: NavDrawer(),
           appBar: AppBar(
             title: Text('My Quiz App'),
           ),
