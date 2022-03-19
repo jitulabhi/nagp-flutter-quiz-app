@@ -14,13 +14,13 @@ import 'BuildQuestion.dart';
 class QuestionPage extends StatelessWidget {
   final QuizModel selectedQuiz;
   final int quizId = new DateTime.now().millisecondsSinceEpoch;
-  final int totalQuizTime = 1;
+  final int totalQuizTime = 5;
   Timer? timer;
 
   QuestionPage(this.selectedQuiz);
 
   startTimer(BuildContext context) {
-    if (timer == null || !timer!.isActive) print("Tiems start");
+    if (timer == null || !timer!.isActive) print("Times start");
     timer = Timer(Duration(minutes: totalQuizTime), () {
       print("Times up");
       BlocProvider.of<QuestionBloc>(context).add(FinishQuestion(this.quizId));
